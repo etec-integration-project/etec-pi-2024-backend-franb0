@@ -4,6 +4,10 @@ services:
   mi_mysql:
     image: mysql:latest
     ports:
-      - "3037:3306"
+      - "3036:3306"
     environment:
       MYSQL_ROOT_PASSWORD: password
+  backend:
+    context: .
+    depends_on:
+      - mi_mysql
