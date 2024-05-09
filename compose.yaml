@@ -6,12 +6,9 @@ services:
         - 3306:3306
     volumes:
         - /tmp/data/:/var/lib/mysql
-        - /etc/localtime:/etc/localtime:ro
-        - /etc/timezone:/etc/timezone:ro
     restart: always
     environment:
         - MYSQL_ROOT_PASSWORD=root
-        - TZ=America/Argentina/Mendoza
     networks:
       - express-app
 

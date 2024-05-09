@@ -10,8 +10,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN chmod -R 777 /app
 
-USER node
-
 RUN npm install -g npm
 RUN npm install
 
@@ -19,4 +17,6 @@ COPY . .
 
 EXPOSE 3000
 
-CMD [ "node", "index.js" ]
+ CMD [ "node", "index.js" ]
+
+# CMD [ "npm", "start" ]
