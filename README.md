@@ -19,4 +19,6 @@
     docker compose up
     ```
 
+Utiliza la IP del contenedor para probar las conexiones. El puerto 3000 está asignado al servidor.
+
 ¡Y eso es todo! Ahora tu proyecto debería estar funcionando.
