@@ -71,5 +71,4 @@ Content-Type: application/json
 ```http
 DELETE http://localhost:3000/users/1 HTTP/1.1
 ```
-```
 
