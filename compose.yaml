@@ -1,16 +1,18 @@
-services:
+version: '3.8'
 
+services:
   mysql:
     image: mysql:latest
     ports:
-        - 3306:3306
+      - "3306:3306"
     volumes:
-        - /tmp/data/:/var/lib/mysql
+      - /tmp/data:/var/lib/mysql
     restart: always
     environment:
-        - MYSQL_ROOT_PASSWORD=root
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
     networks:
-      - express-app
+      - franci-app
 
   app:
     build:
@@ -21,12 +23,12 @@ services:
     depends_on:
       - mysql
     environment:
-      - DATABASE_NAME=app
-      - DATABASE_USERNAME=root
-      - DATABASE_PASSWORD=root
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_HOST=mysql
     networks:
-      - express-app
+      - franci-app
 
 networks:
-  express-app:
+  franci-app:
