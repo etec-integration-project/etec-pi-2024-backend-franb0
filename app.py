@@ -15,9 +15,9 @@ db = SQLAlchemy(app)
 
 
 @app.route('/users', methods=['GET'])
-def get_users():
-    users = User.query.all()
-    return jsonify([user.to_dict() for user in users])
+def get_user():
+    user = User.query.all()
+    return jsonify([user.to_dict() for user in user])
 
 @app.route('/users/<int:id>', methods=['GET'])
 def get_user(id):
