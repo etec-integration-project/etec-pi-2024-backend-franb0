@@ -20,6 +20,8 @@ class Users(db.Model):
     password = db.Column(db.String(120), nullable=False)
     createdAt = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
+
+
 @app.route('/users', methods=['GET'])
 def get_users():
     users = Users.query.all()

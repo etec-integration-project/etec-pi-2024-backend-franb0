@@ -11,5 +11,5 @@ class Users(db.Model):
             'id': self.id,
             'name': self.name,
             'email': self.email,
-            'password': self.password
+            'createdAt': self.createdAt.strftime('%Y-%m-%d %H:%M:%S')  # Format the datetime object
         }
