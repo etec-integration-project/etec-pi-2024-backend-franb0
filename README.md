@@ -17,7 +17,7 @@
 
 3. Ejecutar Docker Compose
     ```bash
-    docker compose up
+    docker compose up --build
     ```
 
 Utiliza la IP del contenedor para probar las conexiones. El puerto 3000 está asignado al servidor.

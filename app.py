@@ -12,7 +12,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-class User(db.Model):
+class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -20,25 +20,25 @@ class User(db.Model):
 
 @app.route('/users', methods=['GET'])
 def get_users():
-    users = User.query.all()
+    users = Users.query.all()
     return jsonify([user.to_dict() for user in users])
 
 @app.route('/users/<int:id>', methods=['GET'])
 def get_user(id):
-    user = User.query.get_or_404(id)
+    user = Users.query.get_or_404(id)
     return jsonify(user.to_dict())
 
 @app.route('/users', methods=['POST'])
 def create_user():
     data = request.json
-    new_user = User(name=data['name'], email=data['email'], password=data['password'])
+    new_user = Users(name=data['name'], email=data['email'], password=data['password'])
     db.session.add(new_user)
     db.session.commit()
     return jsonify(new_user.to_dict()), 201
 
 @app.route('/users/<int:id>', methods=['PUT'])
 def update_user(id):
-    user = User.query.get_or_404(id)
+    user = Users.query.get_or_404(id)
     data = request.json
     user.name = data['name']
     user.email = data['email']
@@ -48,7 +48,7 @@ def update_user(id):
 
 @app.route('/users/<int:id>', methods=['DELETE'])
 def delete_user(id):
-    user = User.query.get_or_404(id)
+    user = Users.query.get_or_404(id)
     db.session.delete(user)
     db.session.commit()
     return jsonify({'message': 'User deleted'})
