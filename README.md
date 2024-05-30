@@ -15,9 +15,11 @@
     cd etec-pi-2024-backend-franb0
     ```
 
-3. Ejecutar Docker Compose
+3. Ejecutar Docker Compose (importante que sea por separado)
     ```bash
-    docker compose up --build
+    docker compose up --build mysql
+
+    docker compose up --build app
     ```
 
 Utiliza la IP del contenedor para probar las conexiones. El puerto 3000 está asignado al servidor.
