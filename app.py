@@ -20,13 +20,15 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
     createdAt = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)  # Add default value
+    updatedAt = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)  # Add default value
 
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
             'email': self.email,
-            'createdAt': self.createdAt.strftime('%Y-%m-%d %H:%M:%S')  # Format the datetime object
+            'createdAt': self.createdAt.strftime('%Y-%m-%d %H:%M:%S'),  # Format the datetime object
+            'updatedAt': self.updatedAt.strftime('%Y-%m-%d %H:%M:%S')
         }
 
 
