@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
-from models import User
 
 load_dotenv()
 
@@ -21,9 +20,9 @@ class User(db.Model):
 
 
 @app.route('/users', methods=['GET'])
-def get_user():
-    user = User.query.all()
-    return jsonify([user.to_dict() for user in user])
+def get_users():  # Renamed the function to get_users
+    users = User.query.all()
+    return jsonify([user.to_dict() for user in users])
 
 @app.route('/users/<int:id>', methods=['GET'])
 def get_user(id):
