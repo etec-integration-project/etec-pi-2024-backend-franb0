@@ -36,6 +36,3 @@ def delete_user(id):
     db.session.delete(user)
     db.session.commit()
     return jsonify({'message': 'User deleted'})
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=3000)

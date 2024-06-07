@@ -5,6 +5,12 @@
 
 ### Pasos de instalación
 
+app/__init__.py: Initialize the app and the database.
+app/models.py: Define the models.
+app/views.py: Define the routes.
+app/app.py: Run the application.
+tests/test_app.py: Test the application.
+
 1. Clonar el repositorio
     ```bash
     git clone https://github.com/franb0/etec-pi-2024-backend-franb0.git

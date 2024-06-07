@@ -12,4 +12,5 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-from app import views, models
+# Import models here to avoid circular imports
+from app import models
