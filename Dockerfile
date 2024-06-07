@@ -1,10 +1,11 @@
+# Use the official Python image with slim version 3.9
 FROM python:3.9-slim
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    python3-pip
+    python3-pip  # Install pip for Python 3
 
-# Set working directory
+# Set working directory in the container
 WORKDIR /app
 
 # Copy requirements file and install Python dependencies
