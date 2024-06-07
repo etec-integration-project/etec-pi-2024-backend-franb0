@@ -6,10 +6,9 @@ class TestApp(unittest.TestCase):
     
     @classmethod
     def setUpClass(cls):
-        # Set up the application for testing
         app.config['TESTING'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
-        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Optional, depending on your setup
+        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         cls.app = app
         cls.client = cls.app.test_client()
         with cls.app.app_context():
@@ -17,13 +16,11 @@ class TestApp(unittest.TestCase):
     
     @classmethod
     def tearDownClass(cls):
-        # Tear down the database after tests
         with cls.app.app_context():
             db.session.remove()
             db.drop_all()
     
     def setUp(self):
-        # Create test data before each test
         self.app_context = self.app.app_context()
         self.app_context.push()
         user1 = User(name='Test User 1', email='test1@example.com', password='password1')
@@ -33,7 +30,6 @@ class TestApp(unittest.TestCase):
         db.session.commit()
     
     def tearDown(self):
-        # Clean up test data after each test
         User.query.delete()
         db.session.commit()
         self.app_context.pop()
@@ -42,7 +38,7 @@ class TestApp(unittest.TestCase):
         response = self.client.get('/users')
         data = response.json
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(data), 2)  # Verify that all users are returned
+        self.assertEqual(len(data), 2)
     
     def test_get_user(self):
         response = self.client.get('/users/1')

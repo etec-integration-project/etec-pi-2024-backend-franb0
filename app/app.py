@@ -1,39 +1,9 @@
-from datetime import datetime
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-
-app = Flask(__name__)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+mysqlconnector://{os.getenv('DATABASE_USERNAME')}:{os.getenv('DATABASE_PASSWORD')}@{os.getenv('DATABASE_HOST')}:{os.getenv('DATABASE_PORT')}/{os.getenv('DATABASE_NAME')}"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
-
-class User(db.Model):
-    __tablename__ = 'users'  # Specify the table name explicitly
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(120), nullable=False)
-    createdAt = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)  # Add default value
-    updatedAt = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)  # Add default value
-
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'email': self.email,
-            'createdAt': self.createdAt.strftime('%Y-%m-%d %H:%M:%S'),  # Format the datetime object
-            'updatedAt': self.updatedAt.strftime('%Y-%m-%d %H:%M:%S')
-        }
-
+from flask import request, jsonify
+from app import app, db
+from app.models import User
 
 @app.route('/users', methods=['GET'])
-def get_users():  # Renamed the function to get_users
+def get_users():
     users = User.query.all()
     return jsonify([user.to_dict() for user in users])
 
