@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     python3-pip  # Install pip for Python 3
 
 # Set working directory in the container
-WORKDIR /app
+WORKDIR /
 
 # Copy requirements file and install Python dependencies
 COPY requirements.txt requirements.txt
