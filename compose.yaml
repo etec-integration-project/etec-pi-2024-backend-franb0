@@ -23,9 +23,9 @@ services:
     depends_on:
       - mysql
     environment:
-      - DATABASE_NAME=${DATABASE_NAME}
-      - DATABASE_USERNAME=${DATABASE_USERNAME}
-      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=app
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=root
       - DATABASE_HOST=mysql
     networks:
       - franci-app
