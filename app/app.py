@@ -1,6 +1,21 @@
-from __init__.py import create_app
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
-app = create_app()
+db = SQLAlchemy()
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=3000)
+def create_app():
+    app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password@mysql/DATABASE_NAME'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    db.init_app(app)
+
+    with app.app_context():
+        # Import parts of our application
+        from . import routes
+        from . import models
+
+        # Create database tables
+        db.create_all()
+
+    return app
