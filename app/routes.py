@@ -1,8 +1,27 @@
 from flask import request, jsonify, current_app as app
-from app import *
-app(app.py)
-from models import *
+from app import db
+from models import User
 
+@app.route('/register', methods=['POST'])
+def register_user():
+    data = request.json
+
+    # Verificar que el nombre de usuario y la contraseña estén presentes
+    if not data.get('name') or not data.get('email') or not data.get('password'):
+        return jsonify({'error': 'Todos los campos (nombre, correo y contraseña) son obligatorios'}), 400
+
+    # Verificar que el nombre de usuario sea único
+    if User.query.filter_by(email=data['email']).first():
+        return jsonify({'error': 'El correo ya está en uso. Por favor elija uno diferente.'}), 400
+
+    # Crear un nuevo usuario
+    new_user = User(name=data['name'], email=data['email'], password=data['password'])
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify(new_user.to_dict()), 201
+
+# Los demás endpoints permanecen igual
 @app.route('/users', methods=['GET'])
 def get_users():
     users = User.query.all()
