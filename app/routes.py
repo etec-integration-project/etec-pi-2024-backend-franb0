@@ -1,6 +1,6 @@
 from flask import request, jsonify, current_app as app
-from app import db
-from models import User
+from .app import db
+from .models import User
 
 @app.route('/register', methods=['POST'])
 def register_user():
@@ -21,7 +21,6 @@ def register_user():
 
     return jsonify(new_user.to_dict()), 201
 
-# Los demás endpoints permanecen igual
 @app.route('/users', methods=['GET'])
 def get_users():
     users = User.query.all()
