@@ -39,19 +39,19 @@ Puedes probar el funcionamiento del proyecto utilizando herramientas como Postma
 #### Obtener todos los usuarios
 
 ```http
-GET http://localhost:3000/users HTTP/1.1
+GET http://localhost:3003/users HTTP/1.1
 ```
 
 #### Obtener un usuario específico
 
 ```http
-GET http://localhost:3000/users/1 HTTP/1.1
+GET http://localhost:3003/users/1 HTTP/1.1
 ```
 
 #### Crear un nuevo usuario
 
 ```http
-POST http://localhost:3000/users HTTP/1.1
+POST http://localhost:3003/users HTTP/1.1
 Content-Type: application/json
 
 {
@@ -64,7 +64,7 @@ Content-Type: application/json
 #### Actualizar un usuario existente
 
 ```http
-PUT http://localhost:3000/users/1 HTTP/1.1
+PUT http://localhost:3003/users/1 HTTP/1.1
 Content-Type: application/json
 
 {
@@ -77,6 +77,6 @@ Content-Type: application/json
 #### Eliminar un usuario
 
 ```http
-DELETE http://localhost:3000/users/1 HTTP/1.1
+DELETE http://localhost:3003/users/1 HTTP/1.1
 ```
 
