@@ -13,7 +13,7 @@ tests/test_app.py: Test the application.
 
 1. Clonar el repositorio
     ```bash
-    git clone https://github.com/franb0/etec-pi-2024-backend-franb0.git
+    git clone https://github.com/etec-integration-project/etec-pi-2024-backend-franb0.git
     ```
 
 2. Ir al directorio del proyecto
