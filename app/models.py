@@ -8,7 +8,7 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
     createdAt = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    updatedAt = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updatedAt = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def to_dict(self):
         return {
