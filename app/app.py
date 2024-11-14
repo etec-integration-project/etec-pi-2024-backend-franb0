@@ -30,6 +30,47 @@ class User(db.Model):
             'updatedAt': self.updatedAt.strftime('%Y-%m-%d %H:%M:%S')
         }
 
+class Product(db.Model):
+    __tablename__ = 'products'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    image_url = db.Column(db.String(120), nullable=False)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'price': self.price,
+            'image_url': self.image_url,
+        }
+
+class Rating(db.Model):
+    __tablename__ = 'rating'
+    id = db.Column(db.Integer, primary_key=True)
+    rating = db.Column(db.SmallInteger, nullable=False)
+    product_id = db.Column(db.Integer, nullable=False)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'rating': self.rating,
+            'product_id': self.product_id,
+        }
+
+class Support(db.Model):
+    __tablename__ = 'support'
+    id = db.Column(db.Integer, primary_key=True)
+    description = db.Column(db.Text, nullable=False)
+    email = db.Column(db.String(120), nullable=False)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'description': self.description,
+            'email': self.email,
+        }
+
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{os.environ['DATABASE_USERNAME']}:{os.environ['DATABASE_PASSWORD']}@{os.environ['DATABASE_HOST']}/{os.environ['DATABASE_NAME']}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -105,12 +146,73 @@ def delete_user(id):
     db.session.commit()
     return jsonify({'message': 'User deleted'})
 
+@app.route('/api/rating/<int:product_id>', methods=['GET'])
+def get_rating(product_id):
+    ratings = Rating.query.filter_by(product_id=product_id).all()
+    
+    if not ratings:
+        return jsonify({"error": "No ratings found for this product."}), 404
+
+    total_ratings = sum(rating.rating for rating in ratings)
+    average_rating = total_ratings / len(ratings)
+
+    return jsonify({"rating": round(average_rating, 2)})
+
+@app.route('/api/rate/<int:product_id>', methods=['POST'])
+def rate_product(product_id):
+    data = request.json
+    rating_value = data['rating']
+    
+    if not (1 <= rating_value <= 5):
+        return jsonify({"error": "Rating must be between 1 and 5."}), 400
+
+    new_rating = Rating(rating=rating_value, product_id=product_id)
+    db.session.add(new_rating)
+    db.session.commit()
+
+    return jsonify({"message": "Rating added successfully!"}), 201
+
+@app.route('/api/products', methods=['GET'])
+def get_products():
+    products = Product.query.all()
+    return jsonify([product.to_dict() for product in products])
+
+@app.route('/api/support', methods=['POST'])
+def post_support():
+    data = request.json
+    description = data['description']
+    email = data['email']
+    
+    if not description or not email:
+        return jsonify({"error": "A description and Email should be provided."}), 400
+
+    new_support = Support(description=description, email=email)
+    db.session.add(new_support)
+    db.session.commit()
+
+    return jsonify({"message": "Support message added successfully!"}), 201
+
 # Register the blueprint
 app.register_blueprint(bp)
 
 # Create database tables when the app starts
 with app.app_context():
     db.create_all()
+
+    products = [
+        {"name": "Product 1", "price": 10, "image_url": "https://via.placeholder.com/150"},
+        {"name": "Product 2", "price": 15, "image_url": "https://via.placeholder.com/150"},
+        {"name": "Product 3", "price": 20, "image_url": "https://via.placeholder.com/150"},
+    ]
+
+    for product in products:
+        existing_product = Product.query.filter_by(name=product["name"]).first()
+        if not existing_product:
+            new_product = Product(name=product["name"], price=product["price"], image_url=product["image_url"])
+            db.session.add(new_product)
+
+    db.session.commit()
+    print("Products added succesfully")
 
 # Run the app
 if __name__ == "__main__":
