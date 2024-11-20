@@ -236,7 +236,7 @@ def post_cart():
     db.session.add(new_cart)
     db.session.commit()
 
-    return jsonify({"message": "Support message added successfully!"}), 201
+    return jsonify({"message": "Cart transaction succesfull!", 'content': content}), 201
 
 # Register the blueprint
 app.register_blueprint(bp)
