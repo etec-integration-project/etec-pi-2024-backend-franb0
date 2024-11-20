@@ -224,7 +224,7 @@ def post_support():
     return jsonify({"message": "Support message added successfully!"}), 201
 
 @app.route('/api/buy', methods=['POST'])
-def post_support():
+def post_cart():
     data = request.json
     user_id = session.get('user_id', None)
     content = data['content']
