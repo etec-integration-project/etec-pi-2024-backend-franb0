@@ -4,6 +4,7 @@ from flask import Flask, Blueprint, request, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_cors import CORS
+import json
 
 # Create a Flask app
 app = Flask(__name__)
@@ -227,10 +228,12 @@ def post_support():
 def post_cart():
     data = request.json
     user_id = session.get('user_id', None)
-    content = data
+    products = data
 
     if user_id == None:
         return jsonify({"error": "User not logged in"}), 401
+    
+    content = json.dumps(products)
 
     new_cart = Cart(user_id=user_id, content=content)
     db.session.add(new_cart)
