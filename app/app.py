@@ -1,7 +1,8 @@
 import os
 from datetime import datetime
 from flask import Flask, Blueprint, request, jsonify, session
-from flask_sqlalchemy import SQLAlchemy, func
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 from flask_cors import CORS
 
 # Create a Flask app
