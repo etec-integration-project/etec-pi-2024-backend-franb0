@@ -223,6 +223,21 @@ def post_support():
 
     return jsonify({"message": "Support message added successfully!"}), 201
 
+@app.route('/api/buy', methods=['POST'])
+def post_support():
+    data = request.json
+    user_id = session.get('user_id', None)
+    content = data['content']
+
+    if user_id == None:
+        return jsonify({"error": "User not logged in"}), 401
+
+    new_cart = Cart(user_id=user_id, content=content)
+    db.session.add(new_cart)
+    db.session.commit()
+
+    return jsonify({"message": "Support message added successfully!"}), 201
+
 # Register the blueprint
 app.register_blueprint(bp)
 
