@@ -131,13 +131,13 @@ def login_user():
     else:
         return jsonify({'error': 'Invalid email or password'}), 400
     
-@app.route('/session-data')
+@app.route('/api/session-data')
 def session_data():
     username = session.get('name', None)
     user_id = session.get('user_id', None)
     return jsonify({'name': username, 'user_id': user_id})
     
-@app.route('/logout', methods=['POST'])
+@app.route('/api/logout', methods=['POST'])
 def logout():
     session.pop('name', None)
     session.pop('user_id', None)
