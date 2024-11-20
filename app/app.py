@@ -1,11 +1,12 @@
 import os
 from datetime import datetime
-from flask import Flask, Blueprint, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, Blueprint, request, jsonify, session
+from flask_sqlalchemy import SQLAlchemy, func
 from flask_cors import CORS
 
 # Create a Flask app
 app = Flask(__name__)
+app.secret_key = 'franb0_secretKey123#'
 
 # Initialize the database and CORS
 db = SQLAlchemy()
@@ -70,6 +71,21 @@ class Support(db.Model):
             'description': self.description,
             'email': self.email,
         }
+    
+class Cart(db.Model):
+    __tablename__ = 'products'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False)
+    content = db.Column(db.String(120), nullable=False)
+    date_time = db.session.query(func.current_timestamp()).scalar()
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'content': self.content,
+            'date_time': self.date_time
+        }
 
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{os.environ['DATABASE_USERNAME']}:{os.environ['DATABASE_PASSWORD']}@{os.environ['DATABASE_HOST']}/{os.environ['DATABASE_NAME']}"
@@ -108,9 +124,23 @@ def login_user():
     # Check if user exists
     user = User.query.filter_by(email=email).first()
     if user and user.password == password:
-        return jsonify(user.to_dict()), 200
+        session['name'] = user.name
+        session['user_id'] = user.id
+        return jsonify({'message': 'Login Succesfull'}), 200
     else:
         return jsonify({'error': 'Invalid email or password'}), 400
+    
+@app.route('/session-data')
+def session_data():
+    username = session.get('name', None)
+    user_id = session.get('user_id', None)
+    return jsonify({'name': username, 'user_id': user_id})
+    
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.pop('name', None)
+    session.pop('user_id', None)
+    return jsonify({'message': 'Logout Succesfull'}), 200
 
 # Get all users
 @bp.route('/api/users', methods=['GET'])
