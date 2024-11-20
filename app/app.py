@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 from flask import Flask, Blueprint, request, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func
+from datetime import datetime
 from flask_cors import CORS
 
 # Create a Flask app
@@ -78,14 +78,14 @@ class Cart(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)
     content = db.Column(db.String(120), nullable=False)
-    date_time = db.session.query(func.current_timestamp()).scalar()
+    date_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def to_dict(self):
         return {
             'id': self.id,
             'user_id': self.user_id,
             'content': self.content,
-            'date_time': self.date_time
+            'date_time': self.date_time.strftime('%Y-%m-%d %H:%M:%S')
         }
 
 # Database configuration
