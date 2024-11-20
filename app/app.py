@@ -74,7 +74,7 @@ class Support(db.Model):
         }
     
 class Cart(db.Model):
-    __tablename__ = 'products'
+    __tablename__ = 'cart'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)
     content = db.Column(db.String(120), nullable=False)
