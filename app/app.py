@@ -231,7 +231,7 @@ def post_cart():
     products = data
 
     if user_id == None:
-        return jsonify({"error": "User not logged in"}), 401
+        return jsonify({"message": "User not logged in"}), 401
     
     content = json.dumps(products)
 
