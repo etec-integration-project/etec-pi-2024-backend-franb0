@@ -241,6 +241,31 @@ def post_cart():
 
     return jsonify({"message": "Cart transaction succesfull!", 'content': content}), 201
 
+@app.route('/api/carts/<int:user_id>', methods=['POST'])
+def get_user_carts(user_id):
+    carts = Cart.query.filter_by(user_id=user_id).all()
+    
+    if not carts:
+        return jsonify({"error": "No purchases made yet."}), 404
+
+    return jsonify([cart.to_dict() for cart in carts])
+
+@app.route('/api/update-cart/<int:cart_id>', methods=['PATCH'])
+def update_cart(cart_id):
+    data = request.json
+    content = json.dumps(data);
+
+    cart = Cart.query.get(cart_id)
+
+    if not cart:
+        return jsonify({'error': 'Cart not found'}), 404
+
+    cart.content = content
+
+    db.session.commit()
+
+    return jsonify({'message': 'Cart content updated successfully', 'content': cart.to_dict()}), 200
+
 # Register the blueprint
 app.register_blueprint(bp)
 
