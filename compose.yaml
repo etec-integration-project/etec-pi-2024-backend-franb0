@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    volumes:
+      - /tmp/data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+    networks:
+      - franci-app
+
+  app:
+    build:
+      context: .
+    restart: always
+    ports:
+      - "3003:3003"
+    depends_on:
+      - mysql
+    environment:
+      - DATABASE_NAME=app
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=root
+      - DATABASE_HOST=mysql
+    networks:
+      - franci-app
+
+networks:
+  franci-app:
